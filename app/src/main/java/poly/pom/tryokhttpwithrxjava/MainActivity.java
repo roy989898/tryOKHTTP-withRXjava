@@ -12,11 +12,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Response;
 import poly.pom.tryokhttpwithrxjava.Utility.ApiManager;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.Exceptions;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,12 +23,14 @@ public class MainActivity extends AppCompatActivity {
     Button btGet;
     @BindView(R.id.tv_show)
     TextView tvShow;
+    private CompositeSubscription compositeSubsrciption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        compositeSubsrciption = new CompositeSubscription();
 
 
     }
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-        ApiManager.requestUsdToGBP().map(new Func1<Response, String>() {
+        compositeSubsrciption.add(ApiManager.requestUsdToGBP().map(new Func1<Response, String>() {
             @Override
             public String call(Response r) {
                 String jsonString = null;
@@ -61,8 +62,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return jsonString;
             }
-        }).subscribe(onNext, onError);
+        }).subscribe(onNext, onError));
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        compositeSubsrciption.unsubscribe();
+        super.onDestroy();
     }
 }
