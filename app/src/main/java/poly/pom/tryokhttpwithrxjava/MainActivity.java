@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-        ApiManager.requestUsdToGBP().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).map(new Func1<Response, String>() {
+        ApiManager.requestUsdToGBP().map(new Func1<Response, String>() {
             @Override
             public String call(Response r) {
                 String jsonString = null;

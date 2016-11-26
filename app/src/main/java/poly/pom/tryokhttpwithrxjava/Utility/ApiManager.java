@@ -6,12 +6,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.Exceptions;
 import rx.functions.Func0;
+import rx.schedulers.Schedulers;
 
-/**
- * Created by User on 26/11/2016.
- */
+
 
 public class ApiManager {
 
@@ -31,6 +31,6 @@ public class ApiManager {
                 }
 
             }
-        });
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 }
