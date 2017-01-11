@@ -6,5 +6,5 @@ package poly.pom.tryokhttpwithrxjava.Prestener;
 public interface MainActivityPrestener {
     void requestUsdToGBP();
 
-    void unsubscribe();
+    void unbind();
 }

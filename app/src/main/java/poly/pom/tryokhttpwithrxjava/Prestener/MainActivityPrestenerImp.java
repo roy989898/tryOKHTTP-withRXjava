@@ -18,7 +18,7 @@ public class MainActivityPrestenerImp implements MainActivityPrestener {
     private CompositeSubscription compositeSubsrciption;
     private MainActivityView mainActivityView;
 
-    public static MainActivityPrestener newInstance(MainActivityView view) {
+    public static MainActivityPrestener bind(MainActivityView view) {
 
 
         return new MainActivityPrestenerImp(view);
@@ -63,7 +63,7 @@ public class MainActivityPrestenerImp implements MainActivityPrestener {
     }
 
     @Override
-    public void unsubscribe() {
+    public void unbind() {
         compositeSubsrciption.unsubscribe();
     }
 }

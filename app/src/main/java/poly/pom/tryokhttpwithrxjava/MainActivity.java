@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
-        prestener = MainActivityPrestenerImp.newInstance(this);
+        prestener = MainActivityPrestenerImp.bind(this);
 
 
     }
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     protected void onDestroy() {
-        prestener.unsubscribe();
+        prestener.unbind();
         super.onDestroy();
     }
 
