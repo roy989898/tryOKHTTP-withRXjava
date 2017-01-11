@@ -33,13 +33,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     }
 
-    @OnClick(R.id.bt_get)
-    public void onClick() {
-        prestener.requestUsdToGBP();
-
-
-    }
-
     @Override
     protected void onStop() {
         unbinder.unbind();
@@ -50,6 +43,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     protected void onDestroy() {
         prestener.unbind();
         super.onDestroy();
+    }
+
+    @OnClick(R.id.bt_get)
+    public void onClick() {
+        prestener.requestUsdToGBP();
     }
 
     @Override
