@@ -35,14 +35,24 @@ public class MainActivityPrestenerImp implements MainActivityPrestener {
         Action1<String> onNext = new Action1<String>() {
             @Override
             public void call(String s) {
-                mainActivityView.updateView(s);
+                try {
+                    mainActivityView.updateView(s);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+
 
             }
         };
         Action1<Throwable> onError = new Action1<Throwable>() {
             @Override
             public void call(Throwable throwable) {
-                mainActivityView.errorHandle(throwable);
+
+                try {
+                    mainActivityView.errorHandle(throwable);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
 
             }
         };
