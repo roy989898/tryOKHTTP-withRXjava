@@ -35,12 +35,8 @@ public class MainActivityPrestenerImp implements MainActivityPrestener {
         Action1<String> onNext = new Action1<String>() {
             @Override
             public void call(String s) {
-                try {
-                    mainActivityView.updateView(s);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
 
+                mainActivityView.updateView(s);
 
             }
         };
@@ -48,11 +44,7 @@ public class MainActivityPrestenerImp implements MainActivityPrestener {
             @Override
             public void call(Throwable throwable) {
 
-                try {
-                    mainActivityView.errorHandle(throwable);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
+                mainActivityView.errorHandle(throwable);
 
             }
         };
@@ -74,6 +66,7 @@ public class MainActivityPrestenerImp implements MainActivityPrestener {
 
     @Override
     public void unbind() {
+        mainActivityView = null;
         compositeSubsrciption.unsubscribe();
     }
 }

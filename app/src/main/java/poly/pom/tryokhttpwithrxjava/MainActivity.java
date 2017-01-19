@@ -28,20 +28,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
-        prestener = MainActivityPrestenerImp.bind(this);
+
 
 
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        prestener = MainActivityPrestenerImp.bind(this);
+    }
+
+    @Override
     protected void onStop() {
-        unbinder.unbind();
+        prestener.unbind();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        prestener.unbind();
+
         super.onDestroy();
     }
 

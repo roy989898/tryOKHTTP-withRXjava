@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
+    }
 }
 
 dependencies {
@@ -34,6 +38,9 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'com.jakewharton:butterknife:8.1.0'
+    compile 'com.trello:rxlifecycle:1.0'
+// If you want to bind to Android-specific lifecycles
+    compile 'com.trello:rxlifecycle-android:1.0'
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
 
 }
