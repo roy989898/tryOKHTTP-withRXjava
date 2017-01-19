@@ -16,7 +16,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class MainActivityPrestenerImp implements MainActivityPrestener {
     private CompositeSubscription compositeSubsrciption;
-    private MainActivityView mainActivityView;
+    public MainActivityView mainActivityView;
 
     public static MainActivityPrestener bind(MainActivityView view) {
 
