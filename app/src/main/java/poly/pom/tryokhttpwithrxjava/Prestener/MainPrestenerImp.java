@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import okhttp3.Response;
 import poly.pom.tryokhttpwithrxjava.Utility.ApiManager;
-import poly.pom.tryokhttpwithrxjava.View.MainActivityView;
+import poly.pom.tryokhttpwithrxjava.View.MainView;
 import rx.exceptions.Exceptions;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -14,19 +14,19 @@ import rx.subscriptions.CompositeSubscription;
  * Created by Roy.Leung on 11/1/17.
  */
 
-public class MainActivityPrestenerImp implements MainActivityPrestener {
+public class MainPrestenerImp implements MainPrestener {
     private CompositeSubscription compositeSubsrciption;
-    public MainActivityView mainActivityView;
+    public MainView mainView;
 
-    public static MainActivityPrestener bind(MainActivityView view) {
+    public static MainPrestener bind(MainView view) {
 
 
-        return new MainActivityPrestenerImp(view);
+        return new MainPrestenerImp(view);
     }
 
-    public MainActivityPrestenerImp(MainActivityView view) {
+    public MainPrestenerImp(MainView view) {
         compositeSubsrciption = new CompositeSubscription();
-        mainActivityView = view;
+        mainView = view;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class MainActivityPrestenerImp implements MainActivityPrestener {
             @Override
             public void call(String s) {
 
-                mainActivityView.updateView(s);
+                mainView.updateView(s);
 
             }
         };
@@ -44,7 +44,7 @@ public class MainActivityPrestenerImp implements MainActivityPrestener {
             @Override
             public void call(Throwable throwable) {
 
-                mainActivityView.errorHandle(throwable);
+                mainView.errorHandle(throwable);
 
             }
         };
@@ -66,7 +66,7 @@ public class MainActivityPrestenerImp implements MainActivityPrestener {
 
     @Override
     public void unbind() {
-        mainActivityView = null;
+        mainView = null;
         compositeSubsrciption.unsubscribe();
     }
 }

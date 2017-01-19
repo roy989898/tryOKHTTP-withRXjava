@@ -14,12 +14,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import poly.pom.tryokhttpwithrxjava.R;
-import poly.pom.tryokhttpwithrxjava.View.MainActivityView;
+import poly.pom.tryokhttpwithrxjava.View.MainView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment implements MainActivityView {
+public class MainFragment extends Fragment implements MainView {
 
 
     @BindView(R.id.bt_get)
@@ -27,7 +27,7 @@ public class MainFragment extends Fragment implements MainActivityView {
     @BindView(R.id.tv_show)
     TextView tvShow;
     private Unbinder unbinder;
-    private MainActivityPrestener prestener;
+    private MainPrestener prestener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +41,7 @@ public class MainFragment extends Fragment implements MainActivityView {
     @Override
     public void onStart() {
         super.onStart();
-        prestener = MainActivityPrestenerImp.bind(this);
+        prestener = MainPrestenerImp.bind(this);
     }
 
     @Override
