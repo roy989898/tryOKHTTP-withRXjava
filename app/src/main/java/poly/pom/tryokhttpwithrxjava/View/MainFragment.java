@@ -23,10 +23,12 @@ import poly.pom.tryokhttpwithrxjava.R;
 public class MainFragment extends Fragment implements MainView {
 
 
-    @BindView(R.id.bt_get)
-    Button btGet;
     @BindView(R.id.tv_show)
     TextView tvShow;
+    @BindView(R.id.bt_ration)
+    Button btRation;
+    @BindView(R.id.bt_get)
+    Button btGet;
     private Unbinder unbinder;
     private MainPrestener prestener;
 
@@ -69,10 +71,10 @@ public class MainFragment extends Fragment implements MainView {
     }
 
 
-    @OnClick(R.id.bt_get)
+    /*@OnClick(R.id.bt_get)
     public void onClick() {
         prestener.requestUsdToGBP();
-    }
+    }*/
 
     @Override
     public void updateView(String text) {
@@ -82,5 +84,16 @@ public class MainFragment extends Fragment implements MainView {
     @Override
     public void errorHandle(Throwable throwable) {
 
+    }
+
+    @OnClick({R.id.bt_ration, R.id.bt_get})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bt_ration:
+                break;
+            case R.id.bt_get:
+                prestener.requestUsdToGBP();
+                break;
+        }
     }
 }

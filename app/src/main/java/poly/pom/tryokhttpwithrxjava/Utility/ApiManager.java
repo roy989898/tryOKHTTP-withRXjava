@@ -12,7 +12,6 @@ import rx.functions.Func0;
 import rx.schedulers.Schedulers;
 
 
-
 public class ApiManager {
 
 //    http://api.fixer.io/latest?symbols=USD,GBP
@@ -30,6 +29,21 @@ public class ApiManager {
                     throw Exceptions.propagate(e);
                 }
 
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static Observable<Response> requestLatestRate() {
+        final OkHttpClient client = new OkHttpClient();
+        final Request request = new Request.Builder().url("http://api.fixer.io/latest").build();
+        return Observable.defer(new Func0<Observable<Response>>() {
+            @Override
+            public Observable<Response> call() {
+                try {
+                    return Observable.just(client.newCall(request).execute());
+                } catch (IOException e) {
+                    throw Exceptions.propagate(e);
+                }
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
