@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.activity_main, fragment);
         if (addToBackStack)
-            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.addToBackStack(name);
         fragmentTransaction.commit();
 
     }
