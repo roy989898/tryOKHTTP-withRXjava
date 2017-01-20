@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="poly.pom.tryokhttpwithrxjava.Prestener.MainFragment">
+    tools:context="poly.pom.tryokhttpwithrxjava.View.MainFragment">
 
     <Button
         android:id="@+id/bt_get"

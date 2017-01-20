@@ -1,4 +1,4 @@
-package poly.pom.tryokhttpwithrxjava.Prestener;
+package poly.pom.tryokhttpwithrxjava.View;
 
 
 import android.os.Bundle;
@@ -13,8 +13,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import poly.pom.tryokhttpwithrxjava.Prestener.MainPrestener;
+import poly.pom.tryokhttpwithrxjava.Prestener.MainPrestenerImp;
 import poly.pom.tryokhttpwithrxjava.R;
-import poly.pom.tryokhttpwithrxjava.View.MainView;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
-import poly.pom.tryokhttpwithrxjava.Prestener.MainFragment;
+import poly.pom.tryokhttpwithrxjava.View.MainFragment;
 
 public class MainActivity extends AppCompatActivity {
 
