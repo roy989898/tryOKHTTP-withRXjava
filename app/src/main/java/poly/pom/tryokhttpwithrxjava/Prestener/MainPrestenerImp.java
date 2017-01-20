@@ -53,7 +53,9 @@ public class MainPrestenerImp implements MainPrestener {
             public String call(Response r) {
                 String jsonString = null;
                 try {
-                    jsonString = r.body().string();
+                    jsonString = new String(r.body().string());
+                    r.close();
+
                 } catch (IOException e) {
                     throw Exceptions.propagate(e);
                 }

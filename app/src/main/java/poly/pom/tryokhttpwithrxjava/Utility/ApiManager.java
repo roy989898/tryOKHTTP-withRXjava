@@ -17,7 +17,7 @@ public class ApiManager {
 
 //    http://api.fixer.io/latest?symbols=USD,GBP
 
-    public static Observable requestUsdToGBP() {
+    public static Observable<Response> requestUsdToGBP() {
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder().url("http://api.fixer.io/latest?symbols=USD,GBP").build();
         return Observable.defer(new Func0<Observable<Response>>() {
