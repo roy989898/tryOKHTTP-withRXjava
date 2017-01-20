@@ -6,7 +6,7 @@
     tools:context="poly.pom.tryokhttpwithrxjava.View.MainFragment">
 
     <Button
-        android:text="Ration"
+        android:text="Ratio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bt_ration" />
