@@ -43,18 +43,18 @@ public class RatioFragment extends Fragment implements RatioView {
 
         ratioAdapter = new RatioAdapter(getContext(), null);
         lvRation.setAdapter(ratioAdapter);
+        prestener = RatioPrestenerlmp.bind(this);
+        if (savedInstanceState != null) {
+            prestener.tryRequestLatestForeignExchangeFromCache();
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+            prestener.requestLatestForeignExchange();
+        }
 
 
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        prestener = RatioPrestenerlmp.bind(this);
-        progressBar.setVisibility(View.VISIBLE);
-        prestener.tryRequestLatestForeignExchangeFromCache();
-    }
 
     @Override
     public void onStop() {
