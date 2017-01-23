@@ -6,4 +6,5 @@ package poly.pom.tryokhttpwithrxjava.Prestener;
 
 public interface RatioPrestener extends BasePrestener {
     void requestLatestForeignExchange();
+    void tryRequestLatestForeignExchangeFromCache();
 }

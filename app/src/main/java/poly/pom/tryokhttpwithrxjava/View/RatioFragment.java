@@ -53,7 +53,7 @@ public class RatioFragment extends Fragment implements RatioView {
         super.onStart();
         prestener = RatioPrestenerlmp.bind(this);
         progressBar.setVisibility(View.VISIBLE);
-        prestener.requestLatestForeignExchange();
+        prestener.tryRequestLatestForeignExchangeFromCache();
     }
 
     @Override
@@ -67,6 +67,7 @@ public class RatioFragment extends Fragment implements RatioView {
         super.onDestroyView();
         viewUnbinder.unbind();
     }
+
 
     public RatioFragment() {
         // Required empty public constructor

@@ -11,6 +11,7 @@ import okhttp3.Response;
 import poly.pom.tryokhttpwithrxjava.Utility.ApiManager;
 import poly.pom.tryokhttpwithrxjava.View.RatioView;
 import poly.pom.tryokhttpwithrxjava.widget.Ratio;
+import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -24,6 +25,7 @@ public class RatioPrestenerlmp implements RatioPrestener {
 
     private CompositeSubscription compositeSubsrciption;
     public RatioView ratioView;
+    private static Observable<ArrayList<Ratio>> cacheRequest;
 
 
     public RatioPrestenerlmp(RatioView ratioView) {
@@ -50,7 +52,8 @@ public class RatioPrestenerlmp implements RatioPrestener {
                 ratioView.errorHandle(throwable);
             }
         };
-        compositeSubsrciption.add(ApiManager.requestLatestRate().map(new Func1<Response, ArrayList<Ratio>>() {
+
+        cacheRequest = ApiManager.requestLatestRate().map(new Func1<Response, ArrayList<Ratio>>() {
             @Override
             public ArrayList<Ratio> call(Response response) {
                 JSONObject rates;
@@ -79,7 +82,33 @@ public class RatioPrestenerlmp implements RatioPrestener {
                 }
                 return ratioList;
             }
-        }).subscribe(onNext, onError));
+        }).cache();
+
+        compositeSubsrciption.add(cacheRequest.subscribe(onNext, onError));
+
+    }
+
+    @Override
+    public void tryRequestLatestForeignExchangeFromCache() {
+        Action1<ArrayList<Ratio>> onNext = new Action1<ArrayList<Ratio>>() {
+            @Override
+            public void call(ArrayList<Ratio> ratios) {
+                ratioView.showRatioList(ratios);
+
+            }
+        };
+        Action1<Throwable> onError = new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                ratioView.errorHandle(throwable);
+            }
+        };
+        if (cacheRequest != null) {
+            compositeSubsrciption.add(cacheRequest.subscribe(onNext, onError));
+
+        } else {
+            requestLatestForeignExchange();
+        }
 
     }
 
