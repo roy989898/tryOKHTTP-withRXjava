@@ -31,6 +31,10 @@ public class RatioPrestenerlmp implements RatioPrestener {
         this.ratioView = ratioView;
     }
 
+    public static RatioPrestenerlmp bind(RatioView ratioView) {
+        return new RatioPrestenerlmp(ratioView);
+    }
+
     @Override
     public void requestLatestForeignExchange() {
         Action1<ArrayList<Ratio>> onNext = new Action1<ArrayList<Ratio>>() {

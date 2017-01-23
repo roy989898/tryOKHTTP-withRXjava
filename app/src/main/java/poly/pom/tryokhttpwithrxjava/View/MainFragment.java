@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import poly.pom.tryokhttpwithrxjava.MainActivity;
 import poly.pom.tryokhttpwithrxjava.Prestener.MainPrestener;
 import poly.pom.tryokhttpwithrxjava.Prestener.MainPrestenerImp;
 import poly.pom.tryokhttpwithrxjava.R;
@@ -90,6 +91,8 @@ public class MainFragment extends Fragment implements MainView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_ration:
+
+                ((MainActivity) getActivity()).replaceFragment(RatioFragment.newInstance(null), true, null);
                 break;
             case R.id.bt_get:
                 prestener.requestUsdToGBP();
