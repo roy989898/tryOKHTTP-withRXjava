@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import poly.pom.tryokhttpwithrxjava.Adapter.RatioAdapter;
 import poly.pom.tryokhttpwithrxjava.Prestener.RatioPrestenerlmp;
 import poly.pom.tryokhttpwithrxjava.R;
 import poly.pom.tryokhttpwithrxjava.widget.Ratio;
@@ -30,6 +31,7 @@ public class RatioFragment extends Fragment implements RatioView {
     ProgressBar progressBar;
     private RatioPrestenerlmp prestener;
     private Unbinder viewUnbinder;
+    private RatioAdapter ratioAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +41,10 @@ public class RatioFragment extends Fragment implements RatioView {
         viewUnbinder = ButterKnife.bind(this, view);
 
 
+        ratioAdapter = new RatioAdapter(getContext(), null);
+        lvRation.setAdapter(ratioAdapter);
+
+
         return view;
     }
 
@@ -46,12 +52,12 @@ public class RatioFragment extends Fragment implements RatioView {
     public void onStart() {
         super.onStart();
         prestener = RatioPrestenerlmp.bind(this);
+        progressBar.setVisibility(View.VISIBLE);
         prestener.requestLatestForeignExchange();
     }
 
     @Override
     public void onStop() {
-        progressBar.setVisibility(View.VISIBLE);
         prestener.unbind();
         super.onStop();
     }
@@ -78,6 +84,8 @@ public class RatioFragment extends Fragment implements RatioView {
     @Override
     public void showRatioList(ArrayList<Ratio> rList) {
         progressBar.setVisibility(View.GONE);
+        ratioAdapter.setRatioList(rList);
+        ratioAdapter.notifyDataSetChanged();
 
     }
 
