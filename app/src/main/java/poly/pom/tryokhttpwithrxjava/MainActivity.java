@@ -13,14 +13,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     private FragmentManager fm;
+    private MainFragment mainFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        MainFragment.newInstance(null);
-        replaceFragment(MainFragment.newInstance(null), true, null);
+
+        if (savedInstanceState == null) {
+            mainFragment = MainFragment.newInstance(null);
+            replaceFragment(mainFragment, true, null);
+        }
+
 
     }
 
