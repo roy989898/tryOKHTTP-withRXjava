@@ -12,9 +12,11 @@ import poly.pom.tryokhttpwithrxjava.Utility.ApiManager;
 import poly.pom.tryokhttpwithrxjava.View.RatioView;
 import poly.pom.tryokhttpwithrxjava.widget.Ratio;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.Exceptions;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -23,9 +25,9 @@ import rx.subscriptions.CompositeSubscription;
 
 public class RatioPrestenerlmp implements RatioPrestener {
 
-    private CompositeSubscription compositeSubsrciption;
-    public RatioView ratioView;
     private static Observable<ArrayList<Ratio>> cacheRequest;
+    public RatioView ratioView;
+    private CompositeSubscription compositeSubsrciption;
 
 
     public RatioPrestenerlmp(RatioView ratioView) {
@@ -84,7 +86,7 @@ public class RatioPrestenerlmp implements RatioPrestener {
             }
         }).cache();
 
-        compositeSubsrciption.add(cacheRequest.subscribe(onNext, onError));
+        compositeSubsrciption.add(cacheRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError));
 
     }
 

@@ -5,9 +5,11 @@ import java.io.IOException;
 import okhttp3.Response;
 import poly.pom.tryokhttpwithrxjava.Utility.ApiManager;
 import poly.pom.tryokhttpwithrxjava.View.MainView;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.Exceptions;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -15,18 +17,18 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class MainPrestenerImp implements MainPrestener {
-    private CompositeSubscription compositeSubsrciption;
     public MainView mainView;
+    private CompositeSubscription compositeSubsrciption;
+
+    public MainPrestenerImp(MainView view) {
+        compositeSubsrciption = new CompositeSubscription();
+        mainView = view;
+    }
 
     public static MainPrestener bind(MainView view) {
 
 
         return new MainPrestenerImp(view);
-    }
-
-    public MainPrestenerImp(MainView view) {
-        compositeSubsrciption = new CompositeSubscription();
-        mainView = view;
     }
 
     @Override
@@ -61,7 +63,7 @@ public class MainPrestenerImp implements MainPrestener {
                 }
                 return jsonString;
             }
-        }).subscribe(onNext, onError));
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError));
 
 
     }
