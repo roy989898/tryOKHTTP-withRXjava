@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
+
 
 android {
     compileSdkVersion 24
@@ -11,7 +11,20 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        /*****jackOptions start********/
+        jackOptions {
+            enabled true
+        }
+        /*****jackOptions end********/
     }
+
+    /*************lambda~start*************/
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    /*************lambda~end*************/
     buildTypes {
         release {
             minifyEnabled false
@@ -42,5 +55,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.1.0'
     compile 'com.android.support:support-v4:24.2.1'
     testCompile 'junit:junit:4.12'
-    apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    /*****************butterknife:8.4.0 start*****************/
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    /*****************butterknife:8.4.0 end******************/
 }
