@@ -15,7 +15,6 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.Exceptions;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -55,7 +54,7 @@ public class RatioPrestenerlmp implements RatioPrestener {
             }
         };
 
-        cacheRequest = ApiManager.requestLatestRate().map(new Func1<Response, ArrayList<Ratio>>() {
+        /*cacheRequest = ApiManager.requestLatestRate().map(new Func1<Response, ArrayList<Ratio>>() {
             @Override
             public ArrayList<Ratio> call(Response response) {
                 JSONObject rates;
@@ -84,6 +83,34 @@ public class RatioPrestenerlmp implements RatioPrestener {
                 }
                 return ratioList;
             }
+        }).cache();*/
+
+        cacheRequest = ApiManager.requestLatestRate().map((Response response) -> {
+            JSONObject rates;
+            try {
+                String jsonString = new String(response.body().string());
+                response.close();
+                JSONObject jsonObject = new JSONObject(jsonString);
+                rates = jsonObject.optJSONObject("rates");
+            } catch (IOException e) {
+                throw Exceptions.propagate(e);
+            } catch (JSONException e) {
+                throw Exceptions.propagate(e);
+            }
+            if (rates == null)
+                throw Exceptions.propagate(new NullPointerException());
+
+
+            Iterator<String> keys = rates.keys();
+            ArrayList<Ratio> ratioList = new ArrayList<Ratio>();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                String val = rates.optString(key);
+                if (val == null) val = 0 + "";
+                Ratio ratioObject = new Ratio(key, val);
+                ratioList.add(ratioObject);
+            }
+            return ratioList;
         }).cache();
 
         compositeSubsrciption.add(cacheRequest.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError));

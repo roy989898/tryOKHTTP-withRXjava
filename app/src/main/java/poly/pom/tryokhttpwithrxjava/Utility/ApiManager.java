@@ -7,7 +7,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import rx.Observable;
 import rx.exceptions.Exceptions;
-import rx.functions.Func0;
 
 
 public class ApiManager {
@@ -27,7 +26,7 @@ public class ApiManager {
 
     private static Observable<Response> responseObservableCreater(final Request request) {
         final OkHttpClient client = new OkHttpClient();
-        return Observable.defer(new Func0<Observable<Response>>() {
+        /*return Observable.defer(new Func0<Observable<Response>>() {
             @Override
             public Observable<Response> call() {
                 try {
@@ -35,6 +34,14 @@ public class ApiManager {
                 } catch (IOException e) {
                     throw Exceptions.propagate(e);
                 }
+            }
+        });*/
+
+        return Observable.defer(() -> {
+            try {
+                return Observable.just(client.newCall(request).execute());
+            } catch (IOException e) {
+                throw Exceptions.propagate(e);
             }
         });
     }

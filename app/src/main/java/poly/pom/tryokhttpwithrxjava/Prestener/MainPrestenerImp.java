@@ -8,7 +8,6 @@ import poly.pom.tryokhttpwithrxjava.View.MainView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.exceptions.Exceptions;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -34,23 +33,13 @@ public class MainPrestenerImp implements MainPrestener {
     @Override
     public void requestUsdToGBP() {
 
-        Action1<String> onNext = new Action1<String>() {
-            @Override
-            public void call(String s) {
-
-                mainView.updateView(s);
-
-            }
+        Action1<String> onNext = (String s) -> {
+            mainView.updateView(s);
         };
-        Action1<Throwable> onError = new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-
-                mainView.errorHandle(throwable);
-
-            }
+        Action1<Throwable> onError = (Throwable throwable) -> {
+            mainView.errorHandle(throwable);
         };
-        compositeSubsrciption.add(ApiManager.requestUsdToGBP().map(new Func1<Response, String>() {
+      /*  compositeSubsrciption.add(ApiManager.requestUsdToGBP().map(new Func1<Response, String>() {
             @Override
             public String call(Response r) {
                 String jsonString = null;
@@ -63,6 +52,18 @@ public class MainPrestenerImp implements MainPrestener {
                 }
                 return jsonString;
             }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError));*/
+
+        compositeSubsrciption.add(ApiManager.requestUsdToGBP().map((Response r) -> {
+            String jsonString = null;
+            try {
+                jsonString = new String(r.body().string());
+                r.close();
+
+            } catch (IOException e) {
+                throw Exceptions.propagate(e);
+            }
+            return jsonString;
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError));
 
 
