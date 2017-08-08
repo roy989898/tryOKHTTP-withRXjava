@@ -7,16 +7,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.exceptions.Exceptions;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Response;
 import poly.pom.tryokhttpwithrxjava.Utility.ApiManager;
 import poly.pom.tryokhttpwithrxjava.View.RatioView;
 import poly.pom.tryokhttpwithrxjava.widget.Ratio;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.exceptions.Exceptions;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+
 
 /**
  * Created by Roy.Leung on 20/1/17.
@@ -26,11 +27,11 @@ public class RatioPrestenerlmp implements RatioPrestener {
 
     private static Observable<ArrayList<Ratio>> cacheRequest;
     public RatioView ratioView;
-    private CompositeSubscription compositeSubsrciption;
+    private CompositeDisposable compositeSubsrciption;
 
 
     public RatioPrestenerlmp(RatioView ratioView) {
-        compositeSubsrciption = new CompositeSubscription();
+        compositeSubsrciption = new CompositeDisposable();
         this.ratioView = ratioView;
     }
 
@@ -40,50 +41,14 @@ public class RatioPrestenerlmp implements RatioPrestener {
 
     @Override
     public void requestLatestForeignExchange() {
-        Action1<ArrayList<Ratio>> onNext = new Action1<ArrayList<Ratio>>() {
-            @Override
-            public void call(ArrayList<Ratio> ratios) {
-                ratioView.showRatioList(ratios);
-
-            }
-        };
-        Action1<Throwable> onError = new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                ratioView.errorHandle(throwable);
-            }
+        Consumer<ArrayList<Ratio>> onNext = (ArrayList<Ratio> ratios) -> {
+            ratioView.showRatioList(ratios);
         };
 
-        /*cacheRequest = ApiManager.requestLatestRate().map(new Func1<Response, ArrayList<Ratio>>() {
-            @Override
-            public ArrayList<Ratio> call(Response response) {
-                JSONObject rates;
-                try {
-                    String jsonString = new String(response.body().string());
-                    response.close();
-                    JSONObject jsonObject = new JSONObject(jsonString);
-                    rates = jsonObject.optJSONObject("rates");
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
-                } catch (JSONException e) {
-                    throw Exceptions.propagate(e);
-                }
-                if (rates == null)
-                    throw Exceptions.propagate(new NullPointerException());
+        Consumer<Throwable> onError = (Throwable throwable) -> {
+            ratioView.errorHandle(throwable);
+        };
 
-
-                Iterator<String> keys = rates.keys();
-                ArrayList<Ratio> ratioList = new ArrayList<Ratio>();
-                while (keys.hasNext()) {
-                    String key = keys.next();
-                    String val = rates.optString(key);
-                    if (val == null) val = 0 + "";
-                    Ratio ratioObject = new Ratio(key, val);
-                    ratioList.add(ratioObject);
-                }
-                return ratioList;
-            }
-        }).cache();*/
 
         cacheRequest = ApiManager.requestLatestRate().map((Response response) -> {
             JSONObject rates;
@@ -119,19 +84,15 @@ public class RatioPrestenerlmp implements RatioPrestener {
 
     @Override
     public void tryRequestLatestForeignExchangeFromCache() {
-        Action1<ArrayList<Ratio>> onNext = new Action1<ArrayList<Ratio>>() {
-            @Override
-            public void call(ArrayList<Ratio> ratios) {
-                ratioView.showRatioList(ratios);
+        Consumer<ArrayList<Ratio>> onNext = (ArrayList<Ratio> ratios) -> {
+            ratioView.showRatioList(ratios);
+        };
 
-            }
+
+        Consumer<Throwable> onError = (Throwable throwable) -> {
+            ratioView.errorHandle(throwable);
         };
-        Action1<Throwable> onError = new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                ratioView.errorHandle(throwable);
-            }
-        };
+
         if (cacheRequest != null) {
             compositeSubsrciption.add(cacheRequest.subscribe(onNext, onError));
 
@@ -144,7 +105,7 @@ public class RatioPrestenerlmp implements RatioPrestener {
     @Override
     public void unbind() {
         if (compositeSubsrciption != null)
-            compositeSubsrciption.unsubscribe();
+            compositeSubsrciption.dispose();
 
     }
 }

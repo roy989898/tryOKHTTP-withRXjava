@@ -2,14 +2,14 @@ package poly.pom.tryokhttpwithrxjava.Prestener;
 
 import java.io.IOException;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.exceptions.Exceptions;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Response;
 import poly.pom.tryokhttpwithrxjava.Utility.ApiManager;
 import poly.pom.tryokhttpwithrxjava.View.MainView;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.exceptions.Exceptions;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Roy.Leung on 11/1/17.
@@ -17,10 +17,10 @@ import rx.subscriptions.CompositeSubscription;
 
 public class MainPrestenerImp implements MainPrestener {
     public MainView mainView;
-    private CompositeSubscription compositeSubsrciption;
+    private CompositeDisposable compositeSubsrciption;
 
     public MainPrestenerImp(MainView view) {
-        compositeSubsrciption = new CompositeSubscription();
+        compositeSubsrciption = new CompositeDisposable();
         mainView = view;
     }
 
@@ -33,10 +33,10 @@ public class MainPrestenerImp implements MainPrestener {
     @Override
     public void requestUsdToGBP() {
 
-        Action1<String> onNext = (String s) -> {
+        Consumer<String> onNext = (String s) -> {
             mainView.updateView(s);
         };
-        Action1<Throwable> onError = (Throwable throwable) -> {
+        Consumer<Throwable> onError = (Throwable throwable) -> {
             mainView.errorHandle(throwable);
         };
       /*  compositeSubsrciption.add(ApiManager.requestUsdToGBP().map(new Func1<Response, String>() {
@@ -72,6 +72,6 @@ public class MainPrestenerImp implements MainPrestener {
     @Override
     public void unbind() {
         mainView = null;
-        compositeSubsrciption.unsubscribe();
+        compositeSubsrciption.dispose();
     }
 }

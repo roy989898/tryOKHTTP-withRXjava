@@ -2,11 +2,12 @@ package poly.pom.tryokhttpwithrxjava.Utility;
 
 import java.io.IOException;
 
+import io.reactivex.Observable;
+import io.reactivex.exceptions.Exceptions;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
-import rx.exceptions.Exceptions;
+
 
 
 public class ApiManager {
