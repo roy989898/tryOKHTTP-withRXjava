@@ -73,5 +73,6 @@ public class MainPrestenerImp implements MainPrestener {
     public void unbind() {
         mainView = null;
         compositeSubsrciption.unsubscribe();
+        compositeSubsrciption.clear();
     }
 }
